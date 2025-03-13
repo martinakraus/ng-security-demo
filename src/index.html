@@ -8,7 +8,7 @@
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; 
-                  script-src 'self' 'sha256-NMaNzUFqQujFs0yAlq5uj75gaB2CSShP13JecXAnXg0='; 
+                  script-src 'self'; 
                   connect-src 'self' http://localhost:4730; 
                   img-src 'self'; 
                   style-src 'self' 'unsafe-inline' ;"
@@ -17,10 +17,5 @@
   </head>
   <body>
     <app-root></app-root>
-    <script>
-      document.write(
-        "<h1>Inline scripting is <b>not recommended</b>! But if you have not the choice, <b>secure your app with CSP</b></h1>"
-      );
-    </script>
   </body>
 </html>

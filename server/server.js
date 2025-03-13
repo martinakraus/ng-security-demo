@@ -15,11 +15,14 @@ const user = {
     email: 'admin@secret.com'
 }
 
+let csrfToken = '';
+
 app.use((req, res, next) => {
     if (!req.cookies['XSRF-TOKEN']) {
         // Erzeugung eines zufälligen Tokens
         const token = crypto.randomBytes(24).toString('hex');
         // Speicherung des Tokens in einem Cookie
+        csrfToken = token;
         res.cookie('XSRF-TOKEN', token);
     }
     next();
@@ -36,8 +39,12 @@ app.get('/api/profile', function (req, res) {
 
 
 app.post('/api/profile', function (req, res) {
-    console.log(req.body);
-
+    const cookie = req.cookies['XSRF-TOKEN'];
+    if (req.headers['x-xsrf-token'] !== cookie) {
+        res.status(403).send({ text: 'Invalid CSRF Token' });
+        return;
+    }
+    
         user.username = req.body.username || user.username,
         user.password = req.body.password || user.password,
         user.email = req.body.email || user.email

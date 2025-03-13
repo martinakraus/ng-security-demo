@@ -6,6 +6,7 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from "@angular/forms";
+import { Router } from "@angular/router";
 
 type UserFormGroup = {
   username: FormControl<string>;
@@ -20,8 +21,9 @@ type UserFormGroup = {
   styleUrl: "./profile-edit.component.scss",
 })
 export class ProfileEditComponent {
-  http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
   formBuilder = inject(NonNullableFormBuilder);
+  private readonly router = inject(Router);
   form: FormGroup<UserFormGroup> = this.formBuilder.group({
     username: [""],
     email: [""],
@@ -29,10 +31,6 @@ export class ProfileEditComponent {
   });
 
   onSubmit() {
-    // const formData = new FormData();
-    // formData.append("username", this.form.value.username || "");
-    // formData.append("password", this.form.value.password || "");
-    // formData.append("email", this.form.value.email || "");
     const body = new HttpParams()
       .set("username", this.form.value.username || "")
       .set("password", this.form.value.password || "")
@@ -45,7 +43,7 @@ export class ProfileEditComponent {
     this.http
       .post("/api/profile", body.toString(), { headers })
       .subscribe(() => {
-        alert("Profile updated");
+        this.router.navigate(["/profile"]);
       });
   }
 }

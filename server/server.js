@@ -39,12 +39,6 @@ app.get('/api/profile', function (req, res) {
 
 
 app.post('/api/profile', function (req, res) {
-    const cookie = req.cookies['XSRF-TOKEN'];
-    if (req.headers['x-xsrf-token'] !== cookie) {
-        res.status(403).send({ text: 'Invalid CSRF Token' });
-        return;
-    }
-    
         user.username = req.body.username || user.username,
         user.password = req.body.password || user.password,
         user.email = req.body.email || user.email
